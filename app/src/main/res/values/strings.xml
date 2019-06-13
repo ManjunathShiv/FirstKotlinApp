@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">FirstKotlinApp</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btn_detail_label">Go to details</string>
+    <string name="details_button">details_button</string>
+</resources>
