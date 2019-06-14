@@ -42,7 +42,7 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        activity?.title = "First View"
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_main, container, false)
         detailButton= view.findViewById(R.id.btn_detail)
@@ -56,6 +56,7 @@ class MainFragment : Fragment() {
             val action = MainFragmentDirections.actionMainFragmentToDetailFragment()
             action.arg1 = "Manjunath"
             action.arg2 = "Shivakumara"
+
             Navigation.findNavController(it).navigate(action)
         }
     }
