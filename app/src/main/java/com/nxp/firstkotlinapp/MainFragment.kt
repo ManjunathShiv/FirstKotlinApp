@@ -2,6 +2,8 @@ package com.nxp.firstkotlinapp
 
 
 import android.app.ActionBar
+import android.app.Activity
+import android.app.Application
 import android.content.res.Resources
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +11,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders.*
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.Navigation
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
+import java.util.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -27,6 +39,7 @@ class MainFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var userVM : UserViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +55,8 @@ class MainFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        userVM = ViewModelProviders.of(activity!!).get(UserViewModel :: class.java)
+
         activity?.title = "First View"
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_main, container, false)
@@ -54,8 +69,31 @@ class MainFragment : Fragment() {
         activity?.actionBar?.hide()
         detailButton.setOnClickListener {
             val action = MainFragmentDirections.actionMainFragmentToDetailFragment()
-            action.arg1 = "Manjunath"
-            action.arg2 = "Shivakumara"
+            var username = view?.findViewById(R.id.username) as? EditText
+            var userString = username?.text.toString()
+
+            var password = view?.findViewById(R.id.password) as? EditText
+            var pwdString = password?.text.toString()
+
+            action.arg1 = userString
+            action.arg2 = pwdString
+            print("---------$userString----------, $pwdString ----------")
+
+            var user : UserEntity = UserEntity(1,userString, pwdString)
+
+            var result = userVM?.insert(user)
+            println("Insert Status - $result")
+            var allUsers : LiveData<List<UserEntity>>? = userVM?.fetchUsers()
+            println("All Users : $allUsers")
+
+            doAsync {
+                var result = userVM?.insert(user)
+                uiThread {
+                    print("Success")
+                    var allUsers : LiveData<List<UserEntity>>? = userVM?.fetchUsers()
+                    println("All Users : $allUsers")
+                }
+            }
 
             Navigation.findNavController(it).navigate(action)
         }

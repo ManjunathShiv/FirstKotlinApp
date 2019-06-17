@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProviders
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -40,12 +41,8 @@ class DetailFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         activity?.title = "Detail View"
-        val view = inflater.inflate(R.layout.fragment_detail, container, false)
-//        detailText = view.findViewById(R.id.detail_text)
-//        detailText.text = "$param1 $param2"
         return view
     }
-
 
     companion object {
         /**

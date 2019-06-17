@@ -2,6 +2,7 @@ package com.nxp.firstkotlinapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
@@ -27,7 +28,8 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         toolbar.title = "Greeting"
         toolbar.subtitle = "Welcome"
-
+        var dbPath  = getDatabasePath("UserDatabase").absolutePath
+        Log.d(dbPath,"This is room database path")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
