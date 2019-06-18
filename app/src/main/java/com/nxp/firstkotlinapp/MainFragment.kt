@@ -39,24 +39,17 @@ class MainFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private var userVM : UserViewModel? = null
+    private var userVM : UserViewModel? = ViewModelProviders.of(activity!!).get(UserViewModel :: class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.actionBar?.hide()
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        userVM = ViewModelProviders.of(activity!!).get(UserViewModel :: class.java)
-
         activity?.title = "First View"
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_main, container, false)
@@ -69,33 +62,26 @@ class MainFragment : Fragment() {
         activity?.actionBar?.hide()
         detailButton.setOnClickListener {
             val action = MainFragmentDirections.actionMainFragmentToDetailFragment()
-            var username = view?.findViewById(R.id.username) as? EditText
-            var userString = username?.text.toString()
 
-            var password = view?.findViewById(R.id.password) as? EditText
-            var pwdString = password?.text.toString()
+            val username = view?.findViewById(R.id.username) as? EditText
+            val userString = username?.text.toString()
+
+            val password = view?.findViewById(R.id.password) as? EditText
+            val pwdString = password?.text.toString()
+
+
+            print("---------$userString----------, $pwdString ----------")
+
+            val user : UserEntity = UserEntity(1,userString, pwdString)
+
+            userVM?.insert(user)
+            val allUsers : LiveData<List<UserEntity>>? = userVM?.fetchUsers()
+            println("All Users : $allUsers")
 
             action.arg1 = userString
             action.arg2 = pwdString
-            print("---------$userString----------, $pwdString ----------")
-
-            var user : UserEntity = UserEntity(1,userString, pwdString)
-
-            var result = userVM?.insert(user)
-            println("Insert Status - $result")
-            var allUsers : LiveData<List<UserEntity>>? = userVM?.fetchUsers()
-            println("All Users : $allUsers")
-
-            doAsync {
-                var result = userVM?.insert(user)
-                uiThread {
-                    print("Success")
-                    var allUsers : LiveData<List<UserEntity>>? = userVM?.fetchUsers()
-                    println("All Users : $allUsers")
-                }
-            }
-
             Navigation.findNavController(it).navigate(action)
+
         }
     }
 

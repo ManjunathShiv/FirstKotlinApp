@@ -1,10 +1,14 @@
 package com.nxp.firstkotlinapp
 
+import android.app.Activity
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
 import android.widget.Toolbar
@@ -21,13 +25,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-       setContentView(R.layout.activity_main)
-
-        toolbar = findViewById(R.id.toolbar)
+        setContentView(R.layout.activity_main)
+        toolbar = findViewById(R.id.myToolBar)
 
         setSupportActionBar(toolbar)
         toolbar.title = "Greeting"
         toolbar.subtitle = "Welcome"
+
+
         var dbPath  = getDatabasePath("UserDatabase").absolutePath
         Log.d(dbPath,"This is room database path")
     }
